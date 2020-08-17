@@ -17,7 +17,7 @@ library(tidyr)
 # set for reproducibility
 set.seed(14000)
 
-# Load 'clean data' file (see data respository associated with publication)
+# Load 'clean data' file (see data respository associated with publication, currently stored in GitHub Repo)
 load(file = "DataTables.RData") 
 
 # Check read-in
