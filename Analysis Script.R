@@ -138,7 +138,7 @@ par(mfrow = c(3,3), mar = c(5,3,2,2), bty = "n")
 for(VirX in 3:10){
   
   boxplot(MedAA[,VirX] ~ MedAA$Origin, ylim = c(min(MedAA[,VirX])-0.1, max(MedAA[,VirX])+0.1),
-          main = colnames(MedAA)[VirX], ylab = NA, yaxt = 'n', xlab = 'Origin', 
+          main = colnames(MedAA)[VirX], ylab = NA, yaxt = 'n', xlab = 'Management History', 
           border = 'transparent', cex.axis = 1.3, cex.lab = 1.5, outline = FALSE, lwd = 1.2,
           boxlty = 0, whisklty = 0, staplelty = 0, boxwex = 0.3)
   
@@ -153,6 +153,44 @@ for(VirX in 3:10){
   
   
   title(ylab="Relative Abundance", line= 1 , cex.lab=1.5)
+  
+  
+}
+
+plot.new()
+
+legend("topleft", unique(VirAdj$Treatment), fill = Shades1, bty = 'n', 
+       border = NA, cex = 2.15)
+
+par(mfrow=c(1,1), mar = c(5,5,2,2))
+
+# Make this plot again but with y-axes to satisfy reviewer 2
+# we'regoing to plot residual relative abundance to still discourage inter-panel comparison (which was the motivation for no y-axes at all)
+
+MedAARes <- MedAA
+
+for(VirX in 3:10){
+ 
+  MedAARes[,VirX] <- MedAARes[,VirX] - mean(MedAARes[,VirX]) 
+   
+}
+
+par(mfrow = c(3,3), mar = c(5,7,2,2), bty = "n")
+
+for(VirX in 3:10){
+  
+  boxplot(MedAARes[,VirX] ~ MedAARes$Origin, ylim = c(min(MedAARes[,VirX])-0.1, max(MedAARes[,VirX])+0.1),
+          main = colnames(MedAARes)[VirX], ylab = 'Residual \n Relative Abundace', xlab = 'Management History', 
+          border = 'transparent', cex.axis = 1.3, cex.lab = 1.5, outline = FALSE, lwd = 1.2,
+          boxlty = 0, whisklty = 0, staplelty = 0, boxwex = 0.3)
+  
+  stripchart(MedAARes[,VirX] ~ MedAARes$Origin,
+             vertical = T, add = T, pch = 16, col = Shades2, cex = 1.4, 
+             method = 'jitter', lwd = 2)
+  
+  VMS <- aggregate(MedAARes[,VirX] ~ MedAARes[,2], FUN = mean)
+  stripchart(VMS[,2] ~ VMS[,1],
+             vertical = T, add = T, pch = 95, col = Shades1, cex = 4, lwd = 2)
   
   
 }
